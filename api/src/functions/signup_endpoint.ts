@@ -1,13 +1,13 @@
 import { APIGatewayEvent, Context } from 'aws-lambda'
 import bcrypt from 'bcrypt'
 
-interface User {
+export interface User {
   email: string
   username: string
   hashedPassword: string
 }
 
-const users: User[] = [] // Simulating a database
+export const users: User[] = [] // Simulating a database
 
 export const handler = async (event: APIGatewayEvent, _context: Context) => {
   try {

@@ -1,4 +1,4 @@
-import { handler } from './signup_endpoint'
+import { handler, users} from './signup_endpoint'
 
 describe('register function', () => {
   // Mock data
