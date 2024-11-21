@@ -55,7 +55,7 @@ export const handler = async (event: APIGatewayEvent, _context: Context) => {
       body: JSON.stringify({ token }),
     }
   } catch (error) {
-    console.error('Login error:', error)
+    //console.error('Login error:', error)
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Internal Server Error' }),
