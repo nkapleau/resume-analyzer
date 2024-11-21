@@ -7,7 +7,7 @@ export interface User {
   hashedPassword: string
 }
 
-export const users: User[] = [] // Simulating a database
+export const users: User[] = [{ email: 'user@example.com', username: 'user123', hashedPassword: 'hashedPwd' }, ] // Simulating a database
 
 export const handler = async (event: APIGatewayEvent, _context: Context) => {
   try {

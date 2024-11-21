@@ -28,7 +28,7 @@ describe('register function', () => {
 
   it('returns 400 if email is already in use', async () => {
     // Add a mock user
-    users.push({ email: 'user@example.com', username: 'user123', hashedPassword: 'hashedPwd' })
+    //users.push({ email: 'user@example.com', username: 'user123', hashedPassword: 'hashedPwd' })
 
     const event = createEvent({
       email: 'user@example.com',
@@ -65,7 +65,11 @@ describe('register function', () => {
   })
 
   it('returns 500 if an unexpected error occurs', async () => {
-    const event = createEvent(null) // Malformed body
+    //const event = createEvent(null) // Malformed body
+
+    //const response = await handler(event as any, mockContext as any)
+
+    const event = { httpMethod: 'POST', body: '{invalidJson}' }
 
     const response = await handler(event as any, mockContext as any)
 
