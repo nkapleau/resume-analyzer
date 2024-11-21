@@ -1,53 +1,52 @@
-import { APIGatewayEvent, Context } from '@redwoodjs/api'
-import bcrypt from 'bcryptjs'
+import { APIGatewayEvent, Context } from 'aws-lambda'
+import bcrypt from 'bcrypt'
 
 interface User {
   email: string
-  passwordHash: string
   username: string
+  hashedPassword: string
 }
 
-let users: User[] = []
+const users: User[] = [] // Simulating a database
 
-export const handler = async (event: APIGatewayEvent, context: Context) => {
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    }
-  }
-
+export const handler = async (event: APIGatewayEvent, _context: Context) => {
   try {
-    const { email, password, username } = JSON.parse(event.body || '{}')
+    if (event.httpMethod !== 'POST') {
+      return {
+        statusCode: 405,
+        body: JSON.stringify({ error: 'Method Not Allowed' }),
+      }
+    }
 
-    // Input validation
+    const body = JSON.parse(event.body || '{}')
+    const { email, password, username } = body
+
     if (!email || !password || !username) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required fields' }),
+        body: JSON.stringify({ error: 'All fields are required' }),
       }
     }
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
+    // Check if email is already registered
+    const existingUser = users.find((user) => user.email === email)
+    if (existingUser) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid email format' }),
+        body: JSON.stringify({ error: 'Email is already in use' }),
       }
     }
 
-    // Check email uniqueness
-    if (users.some((user) => user.email === email)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Email already in use' }),
-      }
-    }
+    // Hash the password
+    const saltRounds = 10
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10)
-
-    // Store the user
-    users.push({ email, passwordHash, username })
+    // Save the user
+    users.push({
+      email,
+      username,
+      hashedPassword,
+    })
 
     return {
       statusCode: 201,
