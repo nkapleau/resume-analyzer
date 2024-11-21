@@ -1,5 +1,5 @@
 import { handler } from './login_endpoint'
-import { users } from './signup_endpoint'
+import { users } from '../signup/signup_endpoint'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 

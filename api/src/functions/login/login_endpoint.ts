@@ -1,7 +1,7 @@
 import type { APIGatewayEvent, Context } from 'aws-lambda'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { users } from './signup_endpoint'
+import { users } from '../signup/signup_endpoint'
 
 const JWT_SECRET = 'your-secret-key' // Replace with a strong secret key
 const JWT_EXPIRATION = '1h' // Token expiration time (1 hour)
